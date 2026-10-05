@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>#{get 'title' /}</title>
+        <meta charset="${_response_encoding}">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+        #{get 'moreStyles' /}
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+    	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous" defer></script>
+    </head>
+    <body>
+    	<nav class="navbar navbar-custom navbar-expand-lg" data-bs-theme="dark">
+		  <div class="container-fluid">
+		    <a class="navbar-brand" href="@{Application.index}"><i class="bi bi-shield-check"></i> Seguradora</a>
+		    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+		      <span class="navbar-toggler-icon"></span>
+		    </button>
+		    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+		      <div class="navbar-nav">
+		        <a class="nav-link" aria-current="page" href="@{Application.index}"><i class="bi bi-house-door"></i> Home</a>
+		        <a class="nav-link" href="@{Segurados.listar}"><i class="bi bi-people"></i> Segurados</a>
+		        <a class="nav-link" href="@{Seguros.listar}"><i class="bi bi-file-earmark-text"></i> Apólices</a>
+		      </div>
+		    </div>
+		  </div>
+		</nav>
+
+    	<div class="container">
+	    	#{if flash.success}
+				<div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+				  <i class="bi bi-check-circle me-2"></i>${flash.success}
+				  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			#{/if}
+			#{if flash.error}
+				<div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+				  <i class="bi bi-exclamation-triangle me-2"></i>${flash.error}
+				  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			#{/if}
+
+	        #{doLayout /}
+
+	        <footer class="text-center text-muted mt-5 py-3 border-top">
+	    		<p class="mb-0"><i class="bi bi-shield-check"></i> Seguradora de Veículos &copy; 2026 — Trabalho Avaliativo de Programação para Internet</p>
+	    	</footer>
+
+	        <script src="@{'/public/javascripts/jquery-1.6.4.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>
+	        #{get 'moreScripts' /}
+		</div>
+    </body>
+</html>

@@ -1,0 +1,45 @@
+#{extends 'main.html' /}
+#{set title:'Detalhamento de Apólice' /}
+
+<div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+	<h1><i class="bi bi-file-earmark-text"></i> Detalhamento da Apólice</h1>
+	<div>
+		<a href="@{Seguros.editar(seguro.id)}" class="btn btn-secondary"><i class="bi bi-pencil"></i> Editar</a>
+		<a href="@{Seguros.remover(seguro.id)}" class="btn btn-danger"><i class="bi bi-trash"></i> Remover</a>
+	</div>
+</div>
+<hr />
+
+<div class="card col-md-6 mb-3 shadow-sm">
+	<div class="card-header bg-primary text-white">
+		<strong><i class="bi bi-hash"></i> Apólice #${seguro.id}</strong>
+	</div>
+	<ul class="list-group list-group-flush">
+		<li class="list-group-item d-flex justify-content-between">
+			<span class="text-muted"><i class="bi bi-person"></i> Segurado</span>
+			<span>${seguro.segurado?.nome ?: 'Não informado'}</span>
+		</li>
+		<li class="list-group-item d-flex justify-content-between">
+			<span class="text-muted"><i class="bi bi-envelope"></i> Email</span>
+			<span>${seguro.segurado?.email ?: 'Não informado'}</span>
+		</li>
+		<li class="list-group-item d-flex justify-content-between">
+			<span class="text-muted"><i class="bi bi-telephone"></i> Telefone</span>
+			<span>${seguro.segurado?.telefone ?: 'Não informado'}</span>
+		</li>
+		<li class="list-group-item d-flex justify-content-between">
+			<span class="text-muted"><i class="bi bi-car-front"></i> Veículo</span>
+			<span>${seguro.modelo}</span>
+		</li>
+		<li class="list-group-item d-flex justify-content-between">
+			<span class="text-muted"><i class="bi bi-credit-card-2-front"></i> Placa</span>
+			<span class="badge badge-placa">${seguro.placa}</span>
+		</li>
+		<li class="list-group-item d-flex justify-content-between">
+			<span class="text-muted"><i class="bi bi-calendar-event"></i> Data de Contratação</span>
+			<span>${seguro.dataContratacao?.format('dd/MM/yyyy') ?: 'Não informado'}</span>
+		</li>
+	</ul>
+</div>
+
+<a href="@{Seguros.listar}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Retornar</a>

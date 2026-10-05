@@ -1,0 +1,22 @@
+#{extends 'main.html' /}
+#{set title:'Login' /}
+
+<h1 class="mt-3"><i class="bi bi-box-arrow-in-right"></i> Login</h1>
+
+<hr />
+
+<form action="/logado/logar" method="post" class="col-md-4">
+
+	<div class="mb-3">
+		<label class="form-label"><i class="bi bi-person"></i> Login</label>
+		<input type="text" name="login" class="form-control" placeholder="Login" />
+	</div>
+
+		<div class="mb-3">
+		<label class="form-label"><i class="bi bi-lock"></i> Senha</label>
+		<input type="password" name="senha" class="form-control" placeholder="senha" />
+	</div>
+
+   <button type="submit" class="btn btn-primary">Entrar</button>
+   <a href="/logado/registrar" class="btn btn-link">Criar conta</a>
+</form>

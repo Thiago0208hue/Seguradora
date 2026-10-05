@@ -1,0 +1,22 @@
+#{extends 'main.html' /}
+#{set title:'Registrar' /}
+
+<h1 class="mt-3"><i class="bi bi-person-plus"></i> Registrar</h1>
+
+<hr />
+
+<form action="/logado/criar" method="post" class="col-md-4">
+
+<div class="mb-3">
+<label class="form-label"><i class="bi bi-person"></i> Login</label>
+<input type="text" name="login" class="form-control" placeholder="login" />
+</div>
+
+<div class="mb-3">
+<label class="form-label"><i class="bi bi-lock"></i> senha</label>
+<input type="text" name="senha" class="form-control" placeholder="senha" />
+</div>
+
+<button type="submit" class="btn btn-primary"> Registrar</button>
+<a href="/logado/form" class="btn btn-link"> Voltar ao login</a>
+</form>

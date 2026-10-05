@@ -1,0 +1,39 @@
+#{extends 'main.html' /}
+#{set title:'Cadastro de Segurado' /}
+
+#{if s?.id}
+	<h1 class="mt-3"><i class="bi bi-pencil-square"></i> Edição de Segurado</h1>
+#{/if}
+#{else}
+	<h1 class="mt-3"><i class="bi bi-person-plus"></i> Cadastro de Segurado</h1>
+#{/else}
+
+<hr />
+
+<form action="/segurados/salvar" method="post" class="col-md-6">
+
+	<input type="hidden" name="segurado.id" value="${s.id}" />
+
+	<div class="mb-3">
+		<label class="form-label"><i class="bi bi-person"></i> Nome completo</label>
+		<input type="text" name="segurado.nome" value="${s.nome}" class="form-control" placeholder="Nome completo" />
+	</div>
+
+	<div class="mb-3">
+		<label class="form-label"><i class="bi bi-card-text"></i> CPF</label>
+		<input type="text" name="segurado.cpf" value="${s.cpf}" class="form-control" placeholder="CPF" />
+	</div>
+
+	<div class="mb-3">
+		<label class="form-label"><i class="bi bi-envelope"></i> Email</label>
+		<input type="text" name="segurado.email" value="${s.email}" class="form-control" placeholder="Email" />
+	</div>
+
+	<div class="mb-3">
+		<label class="form-label"><i class="bi bi-telephone"></i> Telefone</label>
+		<input type="text" name="segurado.telefone" value="${s.telefone}" class="form-control" placeholder="Telefone" />
+	</div>
+
+	<button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Salvar</button>
+	<a href="@{Segurados.listar}" class="btn btn-outline-secondary">Cancelar</a>
+</form>
