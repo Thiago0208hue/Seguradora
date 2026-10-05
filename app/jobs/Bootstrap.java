@@ -4,8 +4,8 @@ import models.Login;
 import play.jobs.OnApplicationStart;
 import play.jobs.Job;
 
-@OnApplicationStart 
-class Bootstrap extends Job{
+@OnApplicationStart
+public class Bootstrap extends Job {
     
     public void doJob() {
     if (Login.count() == 0) {

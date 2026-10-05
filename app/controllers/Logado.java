@@ -49,6 +49,7 @@ public class Logado extends Controller {
 	   novo.login = login;
 	   novo.senha = senha;
 	   novo.perfil = "USUARIO";
+	   novo.save();
 	   flash.success("Cadastro realizado! Faça login.");
 	   form();
    }

@@ -56,14 +56,16 @@ public class Segurados extends Controller {
 			flash.error("CPF em formato inválido, digite apenas números");
 			form();
 		}
-		String telefoneSonumeros = segurado.telefone.replaceAll("[^0-9]", "");
+		String telefoneSonumeros = (segurado.telefone == null ? "" : segurado.telefone).replaceAll("[^0-9]", "");
 		if (!telefoneSonumeros.trim().matches("[0-9]{11}")) {
 			flash.error("Telefone em formato inválido, digite apenas números formato brasileiro(ex: 84123456789).");
 			form();
 		}
 
 		segurado.nome = segurado.nome.toUpperCase();
-		segurado.email = segurado.email.toLowerCase();
+		if (segurado.email != null) {
+			segurado.email = segurado.email.toLowerCase();
+		}
 		segurado.cpf = cpfSonumeros.replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
 		segurado.telefone = telefoneSonumeros.replaceAll("(\\d{2})(\\d{9})", "($1)$2");
 		segurado.save();

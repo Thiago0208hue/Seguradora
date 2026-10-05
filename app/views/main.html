@@ -17,14 +17,14 @@
     	<nav class="navbar navbar-custom navbar-expand-lg" data-bs-theme="dark">
 		  <div class="container-fluid">
 		    <a class="navbar-brand" href="@{Application.index}"><i class="bi bi-shield-check"></i> Seguradora</a>
-			<a class="nav-link" href="/logado/sair"><i class="bi bi-box-arrow-in-right"></i> sair</a>
 		    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
 		      <span class="navbar-toggler-icon"></span>
 		    </button>
 		    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 		      <div class="navbar-nav">
 				#{if session.usuario}
-				<span class="nav-link ms-lg-3"><i class="bi bi-person-cicle"></i> ${session.usuario}</span>
+				<span class="nav-link ms-lg-3"><i class="bi bi-person-circle"></i> ${session.usuario}</span>
+				<a class="nav-link" href="/logado/sair"><i class="bi bi-box-arrow-right"></i> Sair</a>
 				#{/if}
 		        <a class="nav-link" aria-current="page" href="@{Application.index}"><i class="bi bi-house-door"></i> Home</a>
 		        <a class="nav-link" href="@{Segurados.listar}"><i class="bi bi-people"></i> Segurados</a>
