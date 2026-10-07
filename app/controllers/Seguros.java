@@ -6,22 +6,23 @@ import java.util.List;
 import models.Seguro;
 import models.Segurado;
 import models.Status;
+import play.data.validation.Valid;
 import play.mvc.Controller;
 import play.mvc.With;
 
-@With (Autenticador.class)
+@With(Autenticador.class)
 public class Seguros extends Controller {
 
 	public static void form() {
-		Seguro s = new Seguro();
+		Seguro seguro = new Seguro();
 		List<Segurado> segurados = Segurado.findAll();
-		render(s, segurados);
+		render(seguro, segurados);
 	}
 
 	public static void editar(Long id) {
-		Seguro s = Seguro.findById(id);
+		Seguro seguro = Seguro.findById(id);
 		List<Segurado> segurados = Segurado.findAll();
-		renderTemplate("Seguros/form.html", s, segurados);
+		renderTemplate("Seguros/form.html", seguro, segurados);
 	}
 
 	public static void listar(String termo) {
@@ -45,15 +46,10 @@ public class Seguros extends Controller {
 		render(seguro);
 	}
 
-	public static void salvar(Seguro seguro) {
-		if ((seguro.placa == null || seguro.modelo == null || seguro.segurado == null)
-				|| (seguro.placa.trim().isEmpty() || seguro.modelo.trim().isEmpty())) {
-			flash.error("Cadastro inválido, selecione o segurado ou digite a placa ou o modelo corretamente!");
-			form();
-		}
-		if (!seguro.placa.trim().matches("[A-Za-z]{3}[0-9][A-Za-z][0-9]{2}")) {
-			flash.error("Placa em formato inválido. Use o padrão Mercosul (ex: ABC1D23).");
-			form();
+	public static void salvar(@Valid Seguro seguro) {
+		if (validation.hasErrors()) {
+			List<Segurado> segurados = Segurado.findAll();
+			renderTemplate("Seguros/form.html", seguro, segurados);
 		}
 		seguro.placa = seguro.placa.toUpperCase();
 		seguro.modelo = seguro.modelo.toUpperCase();

@@ -101,3 +101,9 @@ h1, h2, h3, .navbar-brand {
 footer {
 	background-color: #fff;
 }
+.error {
+	color: #dc3545;
+	font-size: 0.875rem;
+	display: block;
+	margin-top: 0.25rem;
+}

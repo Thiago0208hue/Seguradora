@@ -1,7 +1,7 @@
 #{extends 'main.html' /}
 #{set title:'Cadastro de Segurado' /}
 
-#{if s?.id}
+#{if segurado?.id}
 	<h1 class="mt-3"><i class="bi bi-pencil-square"></i> Edição de Segurado</h1>
 #{/if}
 #{else}
@@ -12,26 +12,46 @@
 
 <form action="/segurados/salvar" method="post" class="col-md-6">
 
-	<input type="hidden" name="segurado.id" value="${s.id}" />
+	<input type="hidden" name="segurado.id" value="${segurado.id}" />
 
 	<div class="mb-3">
 		<label class="form-label"><i class="bi bi-person"></i> Nome completo</label>
-		<input type="text" name="segurado.nome" value="${s.nome}" class="form-control" placeholder="Nome completo" />
+		<input type="text" name="segurado.nome" value="${segurado.nome}"
+			class="form-control ${play.data.validation.Validation.hasError('segurado.nome') ? 'is-invalid' : ''}"
+			placeholder="Nome completo" />
+		#{if play.data.validation.Validation.hasError('segurado.nome')}
+			<div class="invalid-feedback">${play.data.validation.Validation.error('segurado.nome').message()}</div>
+		#{/if}
 	</div>
 
 	<div class="mb-3">
 		<label class="form-label"><i class="bi bi-card-text"></i> CPF</label>
-		<input type="text" name="segurado.cpf" value="${s.cpf}" class="form-control" placeholder="CPF" />
+		<input type="text" name="segurado.cpf" value="${segurado.cpf}"
+			class="form-control ${play.data.validation.Validation.hasError('segurado.cpf') ? 'is-invalid' : ''}"
+			placeholder="CPF" />
+		#{if play.data.validation.Validation.hasError('segurado.cpf')}
+			<div class="invalid-feedback">${play.data.validation.Validation.error('segurado.cpf').message()}</div>
+		#{/if}
 	</div>
 
 	<div class="mb-3">
 		<label class="form-label"><i class="bi bi-envelope"></i> Email</label>
-		<input type="text" name="segurado.email" value="${s.email}" class="form-control" placeholder="Email" />
+		<input type="text" name="segurado.email" value="${segurado.email}"
+			class="form-control ${play.data.validation.Validation.hasError('segurado.email') ? 'is-invalid' : ''}"
+			placeholder="Email" />
+		#{if play.data.validation.Validation.hasError('segurado.email')}
+			<div class="invalid-feedback">${play.data.validation.Validation.error('segurado.email').message()}</div>
+		#{/if}
 	</div>
 
 	<div class="mb-3">
 		<label class="form-label"><i class="bi bi-telephone"></i> Telefone</label>
-		<input type="text" name="segurado.telefone" value="${s.telefone}" class="form-control" placeholder="Telefone" />
+		<input type="text" name="segurado.telefone" value="${segurado.telefone}"
+			class="form-control ${play.data.validation.Validation.hasError('segurado.telefone') ? 'is-invalid' : ''}"
+			placeholder="Telefone" />
+		#{if play.data.validation.Validation.hasError('segurado.telefone')}
+			<div class="invalid-feedback">${play.data.validation.Validation.error('segurado.telefone').message()}</div>
+		#{/if}
 	</div>
 
 	<button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Salvar</button>

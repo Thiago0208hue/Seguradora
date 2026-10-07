@@ -1,7 +1,7 @@
 #{extends 'main.html' /}
 #{set title:'Cadastro de Apólice' /}
 
-#{if s?.id}
+#{if seguro?.id}
 	<h1 class="mt-3"><i class="bi bi-pencil-square"></i> Edição de Apólice</h1>
 #{/if}
 #{else}
@@ -12,33 +12,46 @@
 
 <form action="/seguros/salvar" method="post" class="col-md-6">
 
-	<input type="hidden" name="seguro.id" value="${s.id}" />
+	<input type="hidden" name="seguro.id" value="${seguro.id}" />
 
 	<div class="mb-3">
 		<label class="form-label"><i class="bi bi-car-front"></i> Placa do veículo</label>
-		<input type="text" name="seguro.placa" value="${s.placa}" class="form-control" placeholder="Placa do veículo" />
+		<input type="text" name="seguro.placa" value="${seguro.placa}"
+			class="form-control ${play.data.validation.Validation.hasError('seguro.placa') ? 'is-invalid' : ''}"
+			placeholder="Placa do veículo" />
+		#{if play.data.validation.Validation.hasError('seguro.placa')}
+			<div class="invalid-feedback">${play.data.validation.Validation.error('seguro.placa').message()}</div>
+		#{/if}
 	</div>
 
 	<div class="mb-3">
 		<label class="form-label"><i class="bi bi-car-front-fill"></i> Modelo do veículo</label>
-		<input type="text" name="seguro.modelo" value="${s.modelo}" class="form-control" placeholder="Modelo do veículo" />
+		<input type="text" name="seguro.modelo" value="${seguro.modelo}"
+			class="form-control ${play.data.validation.Validation.hasError('seguro.modelo') ? 'is-invalid' : ''}"
+			placeholder="Modelo do veículo" />
+		#{if play.data.validation.Validation.hasError('seguro.modelo')}
+			<div class="invalid-feedback">${play.data.validation.Validation.error('seguro.modelo').message()}</div>
+		#{/if}
 	</div>
 
 	<div class="mb-3">
 		<label class="form-label"><i class="bi bi-calendar-event"></i> Data de contratação</label>
-		<input type="text" name="seguro.dataContratacao" value="${s.dataContratacao}" class="form-control" placeholder="dd/MM/yyyy" />
+		<input type="text" name="seguro.dataContratacao" value="${seguro.dataContratacao}" class="form-control" placeholder="dd/MM/yyyy" />
 	</div>
 
 	<div class="mb-3">
 		<label class="form-label"><i class="bi bi-person-badge"></i> Segurado</label>
-		<select name="seguro.segurado.id" class="form-select">
+		<select name="seguro.segurado.id" class="form-select ${play.data.validation.Validation.hasError('seguro.segurado') ? 'is-invalid' : ''}">
 			<option value="">Selecione o segurado...</option>
 			#{list items:segurados, as:'seg'}
-				<option value="${seg.id}" ${seg.id == s.segurado?.id ? 'selected' : ''}>
+				<option value="${seg.id}" ${seg.id == seguro.segurado?.id ? 'selected' : ''}>
 					${seg.nome}
 				</option>
 			#{/list}
 		</select>
+		#{if play.data.validation.Validation.hasError('seguro.segurado')}
+			<div class="invalid-feedback">${play.data.validation.Validation.error('seguro.segurado').message()}</div>
+		#{/if}
 	</div>
 
 	<button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Salvar</button>
