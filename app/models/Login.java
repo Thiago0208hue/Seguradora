@@ -9,6 +9,7 @@ public class Login extends Model {
     public String login;
     public String senha;
     public String perfil;
+    public String nome;
 
     public String autenticar() {
 

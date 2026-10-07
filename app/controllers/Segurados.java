@@ -67,7 +67,16 @@ validation.match("segurado.nome", segurado.nome, "[\\p{L} ]+").message("Nome dev
 
 		if (validation.hasErrors()) {
 			renderTemplate("Segurados/form.html", segurado);
+			
 		}
+			if (!validation.hasError("segurado.cpf")) {
+				String cpfFormatado = cpfLimpo.replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
+				Segurado existente = Segurado.find("cpf = ?1 and status = ?2", cpfFormatado, Status.ATIVO).first();
+				if (existente != null && !existente.id.equals(segurado.id)) {
+					validation.addError("segurado.cpf", "Já existe um segurado com esse CPF.");
+				}
+			}
+		
 		
 		segurado.nome = segurado.nome.toUpperCase();
 		segurado.email = segurado.email.toLowerCase();

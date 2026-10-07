@@ -18,6 +18,7 @@ public class Logado extends Controller {
         session.put("usuario", resultado);
         Login u = Login.find("login =?1", resultado).first();
         session.put("perfil", u.perfil);
+        session.put("nome", u.nome != null ? u.nome : u.login);
         redirect("/");
     } else {
         flash.error("Login ou senha inválidos");
@@ -31,16 +32,17 @@ public class Logado extends Controller {
    public static void sair() {
     session.remove("usuario");
     session.remove("perfil");
+    session.remove("nome");
     form();
 }
    public static void registrar() {
 	   render();
    }
-   public static void criar(String login, String senha) {
-	   if (login == null || login.trim().isEmpty() || senha == null || senha.isEmpty()) {
-		   flash.error("Preencha login e senha");
-		   registrar();
-	   }
+   public static void criar(String nome, String login, String senha) {
+	    if (nome == null || nome.trim().isEmpty() || login == null || login.trim().isEmpty() || senha == null || senha.isEmpty()) {
+	        flash.error("Preencha nome, login e senha");
+	        registrar();
+	    }
 	   if (Login.count("login = ?1", login) > 0) {
 		   flash.error("Esse login já existe!!");
 		   registrar();
@@ -48,9 +50,13 @@ public class Logado extends Controller {
 	   Login novo = new Login();
 	   novo.login = login;
 	   novo.senha = senha;
+	   novo.nome = nome.trim();
 	   novo.perfil = "USUARIO";
 	   novo.save();
-	   flash.success("Cadastro realizado! Faça login.");
-	   form();
+	   session.put("usuario", novo.login);
+	   session.put("perfil", novo.perfil);
+	   session.put("nome", novo.nome);
+	   flash.success("Conta criada! Bem-vindo, " + novo.nome + ".");
+	   redirect("/");
    }
 }
