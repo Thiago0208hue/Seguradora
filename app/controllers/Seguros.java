@@ -20,10 +20,14 @@ public class Seguros extends Controller {
 	}
 
 	public static void editar(Long id) {
-		Seguro seguro = Seguro.findById(id);
-		List<Segurado> segurados = Segurado.findAll();
-		renderTemplate("Seguros/form.html", seguro, segurados);
-	}
+    Seguro seguro = Seguro.findById(id);
+    if (seguro == null) {
+        flash.error("Apólice não encontrada");
+        listar(null);
+    }
+    List<Segurado> segurados = Segurado.findAll();
+    renderTemplate("Seguros/form.html", seguro, segurados);
+}
 
 	public static void listar(String termo) {
 		List<Seguro> seguros = Seguro.find("status != ?1", Status.INATIVO).fetch();

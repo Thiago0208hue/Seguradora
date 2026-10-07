@@ -32,9 +32,10 @@
 			<td>${s.email}</td>
 			<td class="text-end">
 				<a href="@{Segurados.detalhar(s.id)}" class="btn btn-sm btn-primary"><i class="bi bi-eye"></i></a>
-				<a href="@{Segurados.editar(s.id)}" class="btn btn-sm btn-secondary"><i class="bi bi-pencil"></i></a>
-				<a href="@{Segurados.remover(s.id)}" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
-			</td>
+#{if session.perfil == 'ADMIN'}
+	<a href="@{Segurados.editar(s.id)}" class="btn btn-sm btn-secondary"><i class="bi bi-pencil"></i></a>
+	<a href="@{Segurados.remover(s.id)}" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
+#{/if}
 		</tr>
 		#{/list}
 		#{else}

@@ -17,9 +17,13 @@ public class Segurados extends Controller {
 	}
 
 	public static void editar(Long id) {
-		Segurado segurado = Segurado.findById(id);
-		renderTemplate("Segurados/form.html", segurado);
-	}
+    Segurado segurado = Segurado.findById(id);
+    if (segurado == null) {
+        flash.error("Segurado não encontrado");
+        listar(null);
+    }
+    renderTemplate("Segurados/form.html", segurado);
+}
 
 	public static void listar(String termo) {
 		List<Segurado> segurados = Segurado.find("status != ?1", Status.INATIVO).fetch();
@@ -47,8 +51,7 @@ public class Segurados extends Controller {
 
 		validation.required("segurado.nome", segurado.nome)
 			.message("É obrigatório informar o nome do segurado.");
-		validation.match("segurado.nome", segurado.nome, "[A-Za-z ]+")
-			.message("Nome deve conter apenas letras e espaços.");
+validation.match("segurado.nome", segurado.nome, "[\\p{L} ]+").message("Nome deve conter apenas letras e espaços.");
 		validation.required("segurado.cpf", cpfLimpo)
 			.message("É obrigatório especificar o CPF do segurado.");
 		validation.match("segurado.cpf", cpfLimpo, "[0-9]{11}")
@@ -65,7 +68,7 @@ public class Segurados extends Controller {
 		if (validation.hasErrors()) {
 			renderTemplate("Segurados/form.html", segurado);
 		}
-
+		
 		segurado.nome = segurado.nome.toUpperCase();
 		segurado.email = segurado.email.toLowerCase();
 		segurado.cpf = cpfLimpo.replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");

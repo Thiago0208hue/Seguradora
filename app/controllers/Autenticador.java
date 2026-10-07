@@ -13,11 +13,14 @@ public class Autenticador extends Controller{
             Logado.form();
         }
     }
-    @Before(only =  {"form", "editar", "salvar", "remover"})
-    static void somenteAdmin() {
-    	if(!"ADMIN".equals(session.get("perfil"))) {
-    		flash.error("Acesso restrito ao Administrador");
-    		redirect("/");
-    	}
+  @Before
+static void somenteAdmin() {
+    String acao = request.actionMethod;
+    boolean restrita = "editar".equals(acao) || "remover".equals(acao);
+    if (restrita && !"ADMIN".equals(session.get("perfil"))) {
+        flash.error("Acesso restrito ao Administrador");
+        redirect("/");
     }
+}
+    
 }

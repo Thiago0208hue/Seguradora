@@ -4,9 +4,10 @@
 <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
 	<h1><i class="bi bi-people"></i> Detalhamento do Segurado</h1>
 	<div>
-		<a href="@{Segurados.editar(segurado.id)}" class="btn btn-secondary"><i class="bi bi-pencil"></i> Editar</a>
-		<a href="@{Segurados.remover(segurado.id)}" class="btn btn-danger"><i class="bi bi-trash"></i> Remover</a>
-	</div>
+		#{if session.perfil == 'ADMIN'}
+	<a href="@{Segurados.editar(segurado.id)}" class="btn btn-secondary"><i class="bi bi-pencil"></i> Editar</a>
+	<a href="@{Segurados.remover(segurado.id)}" class="btn btn-danger"><i class="bi bi-trash"></i> Remover</a>
+#{/if}
 </div>
 <hr />
 
