@@ -107,3 +107,15 @@ footer {
 	display: block;
 	margin-top: 0.25rem;
 }
+
+.navbar-custom .nome-usuario {
+	font-size: 1.1rem;
+	font-weight: 600;
+	color: #fff;
+}
+
+.navbar-custom .nav-link[href="/logado/sair"]:hover,
+.navbar-custom .nav-link[href="/logado/sair"]:focus,
+.navbar-custom .nav-link[href="/logado/sair"]:active {
+	color: #ff6b6b !important;
+}

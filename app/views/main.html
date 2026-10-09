@@ -28,7 +28,7 @@
                     </div>
                     <div class="navbar-nav align-items-lg-center">
                         #{if session.usuario}
-                            <span class="navbar-text me-lg-4"><i class="bi bi-person-circle"></i> ${session.nome ?: session.usuario} <span class="badge text-bg-light ms-1">${session.perfil}</span></span>
+                        <span class="navbar-text me-lg-4 nome-usuario"><i class="bi bi-person-circle"></i> ${session.nome ?: session.usuario} <span class="badge text-bg-light ms-1"><span class="badge text-bg-light ms-1">${session.perfil == 'ADMIN' ? 'Administrador' : 'Atendente'}</span></span></span>
                             <a class="nav-link" href="/logado/sair"><i class="bi bi-box-arrow-right"></i> Sair</a>
                         #{/if}
                         #{else}
