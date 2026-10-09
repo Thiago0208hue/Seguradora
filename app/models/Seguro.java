@@ -7,6 +7,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 
+import play.data.binding.As;
 import play.data.validation.Match;
 import play.data.validation.Required;
 import play.db.jpa.Model;
@@ -19,9 +20,8 @@ public class Seguro extends Model {
 	public String placa;
 	@Required(message = "É obrigatorio especificar o modelo do veículo.")
 	public String modelo;
-
+	@As("dd/MM/yyyy")
 	public Date dataContratacao;
-
 	@ManyToOne
 	@Required(message = "É obrigatório que uma apólice tenha um segurado.")
 	public Segurado segurado;

@@ -20,14 +20,14 @@ public class Seguros extends Controller {
 	}
 
 	public static void editar(Long id) {
-    Seguro seguro = Seguro.findById(id);
-    if (seguro == null) {
-        flash.error("Apólice não encontrada");
-        listar(null);
-    }
-    List<Segurado> segurados = Segurado.findAll();
-    renderTemplate("Seguros/form.html", seguro, segurados);
-}
+		Seguro seguro = Seguro.findById(id);
+		if (seguro == null) {
+			flash.error("Apólice não encontrada");
+			listar(null);
+		}
+		List<Segurado> segurados = Segurado.findAll();
+		renderTemplate("Seguros/form.html", seguro, segurados);
+	}
 
 	public static void listar(String termo) {
 		List<Seguro> seguros = Seguro.find("status != ?1", Status.INATIVO).fetch();
@@ -55,6 +55,20 @@ public class Seguros extends Controller {
 			List<Segurado> segurados = Segurado.findAll();
 			renderTemplate("Seguros/form.html", seguro, segurados);
 		}
+
+		if (!validation.hasError("seguro.placa")) {
+			String placaFormatada = seguro.placa.toUpperCase();
+			Seguro existente = Seguro.find("placa = ?1 and status = ?2", placaFormatada, Status.ATIVO).first();
+			if (existente != null && !existente.id.equals(seguro.id)) {
+				validation.addError("seguro.placa", "Já existe uma apólice ativa cadastrada para essa placa.");
+			}
+		}
+
+		if (validation.hasErrors()) {
+			List<Segurado> segurados = Segurado.findAll();
+			renderTemplate("Seguros/form.html", seguro, segurados);
+		}
+
 		seguro.placa = seguro.placa.toUpperCase();
 		seguro.modelo = seguro.modelo.toUpperCase();
 		seguro.save();

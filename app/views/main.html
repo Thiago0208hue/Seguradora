@@ -52,15 +52,16 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             #{/if}
-            #{ifErrors}
-                <div class="alert alert-warning mt-3" role="alert">
-                    <ul class="mb-0">
-                        #{errors}
-                            <li>${error}</li>
-                        #{/errors}
-                    </ul>
-                </div>
-            #{/ifErrors}
+			#{ifErrors}
+			    <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+			        <ul class="mb-0">
+			            #{errors}
+			                <li>${error}</li>
+			            #{/errors}
+			        </ul>
+			        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			    </div>
+			#{/ifErrors}
 
             #{doLayout /}
 

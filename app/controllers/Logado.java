@@ -38,25 +38,52 @@ public class Logado extends Controller {
    public static void registrar() {
 	   render();
    }
-   public static void criar(String nome, String login, String senha) {
-	    if (nome == null || nome.trim().isEmpty() || login == null || login.trim().isEmpty() || senha == null || senha.isEmpty()) {
-	        flash.error("Preencha nome, login e senha");
-	        registrar();
-	    }
-	   if (Login.count("login = ?1", login) > 0) {
-		   flash.error("Esse login já existe!!");
-		   registrar();
-	   }
-	   Login novo = new Login();
-	   novo.login = login;
-	   novo.senha = senha;
-	   novo.nome = nome.trim();
-	   novo.perfil = "USUARIO";
-	   novo.save();
-	   session.put("usuario", novo.login);
-	   session.put("perfil", novo.perfil);
-	   session.put("nome", novo.nome);
-	   flash.success("Conta criada! Bem-vindo, " + novo.nome + ".");
-	   redirect("/");
-   }
-}
+
+public static void criar(String nome, String login, String senha) {
+
+    if (nome == null || nome.trim().isEmpty()
+            || login == null || login.trim().isEmpty()
+            || senha == null || senha.isEmpty()) {
+
+        flash.error("Preencha nome, login e senha.");
+        registrar();
+        return;
+    }
+
+    nome = nome.trim();
+    login = login.trim().toLowerCase();
+
+    if (nome.length() > 100 || login.length() > 50
+            || senha.length() < 8 || senha.length() > 72) {
+
+        flash.error(
+            "Confira os limites: nome até 100 caracteres, "
+            + "login até 50 e senha entre 8 e 72 caracteres."
+        );
+        registrar();
+        return;
+    }
+
+    
+    if (Login.count("lower(login) = ?1", login) > 0) {
+
+        flash.error("Esse login já está cadastrado.");
+        registrar();
+        return;
+    }
+
+    Login novo = new Login();
+    novo.nome = nome;
+    novo.login = login;
+    novo.senha = senha;
+    novo.perfil = "USUARIO";
+
+    novo.save();
+
+    session.put("usuario", novo.login);
+    session.put("perfil", novo.perfil);
+    session.put("nome", novo.nome);
+
+    flash.success("Conta criada com sucesso!");
+    redirect("/");
+}}

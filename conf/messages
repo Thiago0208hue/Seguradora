@@ -1,3 +1,4 @@
 # You can specialize this file for each language.
 # For example, for French create a messages.fr file
 #
+validation.invalid=Verifique o valor informado no formulário.
