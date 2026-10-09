@@ -2,100 +2,180 @@
 #{set title:'Cadastro de Apólice' /}
 
 #{if seguro?.id}
-	<h1 class="mt-3"><i class="bi bi-pencil-square"></i> Edição de Apólice</h1>
+    <h1 class="mt-3">Edição de Apólice</h1>
 #{/if}
 #{else}
-	<h1 class="mt-3"><i class="bi bi-file-earmark-plus"></i> Cadastro de Apólice</h1>
+    <h1 class="mt-3">Cadastro de Apólice</h1>
 #{/else}
 
 <hr />
 
-<form action="/seguros/salvar" method="post" class="col-md-6">
+<form action="@{Seguros.salvar}" method="post" class="col-md-6">
+    <input type="hidden" name="seguro.id" value="${seguro?.id}" />
 
-	<input type="hidden" name="seguro.id" value="${seguro.id}" />
+    <div class="mb-3">
+        <label for="placa" class="form-label">Placa do veículo</label>
+        <input id="placa" type="text" name="seguro.placa"
+            value="${seguro?.placa}"
+            class="form-control ${play.data.validation.Validation.hasError('seguro.placa') ? 'is-invalid' : ''}"
+            placeholder="ABC1D23" maxlength="7"
+            pattern="[A-Za-z]{3}[0-9][A-Za-z][0-9]{2}" required />
+        #{if play.data.validation.Validation.hasError('seguro.placa')}
+            <div class="invalid-feedback">
+                ${play.data.validation.Validation.error('seguro.placa').message()}
+            </div>
+        #{/if}
+    </div>
 
-	<div class="mb-3">
-		<label class="form-label"><i class="bi bi-car-front"></i> Placa do veículo</label>
-		<input type="text" name="seguro.placa" value="${seguro.placa}"
-			class="form-control ${play.data.validation.Validation.hasError('seguro.placa') ? 'is-invalid' : ''}"
-			placeholder="Placa do veículo" />
-		#{if play.data.validation.Validation.hasError('seguro.placa')}
-			<div class="invalid-feedback">${play.data.validation.Validation.error('seguro.placa').message()}</div>
-		#{/if}
-	</div>
+    <div class="mb-3">
+        <label for="marca" class="form-label">Marca</label>
+        <input id="marca" type="text" name="seguro.marca"
+            value="${seguro?.marca}"
+            class="form-control ${play.data.validation.Validation.hasError('seguro.marca') ? 'is-invalid' : ''}"
+            required />
+        #{if play.data.validation.Validation.hasError('seguro.marca')}
+            <div class="invalid-feedback">
+                ${play.data.validation.Validation.error('seguro.marca').message()}
+            </div>
+        #{/if}
+    </div>
 
-	<div class="mb-3">
-		<label class="form-label"><i class="bi bi-car-front-fill"></i> Modelo do veículo</label>
-		<input type="text" name="seguro.modelo" value="${seguro.modelo}"
-			class="form-control ${play.data.validation.Validation.hasError('seguro.modelo') ? 'is-invalid' : ''}"
-			placeholder="Modelo do veículo" />
-		#{if play.data.validation.Validation.hasError('seguro.modelo')}
-			<div class="invalid-feedback">${play.data.validation.Validation.error('seguro.modelo').message()}</div>
-		#{/if}
-	</div>
+    <div class="mb-3">
+        <label for="modelo" class="form-label">Modelo do veículo</label>
+        <input id="modelo" type="text" name="seguro.modelo"
+            value="${seguro?.modelo}"
+            class="form-control ${play.data.validation.Validation.hasError('seguro.modelo') ? 'is-invalid' : ''}"
+            required />
+        #{if play.data.validation.Validation.hasError('seguro.modelo')}
+            <div class="invalid-feedback">
+                ${play.data.validation.Validation.error('seguro.modelo').message()}
+            </div>
+        #{/if}
+    </div>
 
-	<div class="mb-3">
-	    <label class="form-label">Tipo do veículo</label>
+    <div class="mb-3">
+        <label for="anoFabricacao" class="form-label">Ano de fabricação</label>
+        <input id="anoFabricacao" type="number" name="seguro.anoFabricacao"
+            value="${seguro?.anoFabricacao}"
+            class="form-control ${play.data.validation.Validation.hasError('seguro.anoFabricacao') ? 'is-invalid' : ''}"
+            min="1900" step="1" required />
+        #{if play.data.validation.Validation.hasError('seguro.anoFabricacao')}
+            <div class="invalid-feedback">
+                ${play.data.validation.Validation.error('seguro.anoFabricacao').message()}
+            </div>
+        #{/if}
+    </div>
 
-	    <select name="seguro.tipoVeiculo"
-	            class="form-select"
-	            required>
-	        <option value="">Selecione o tipo</option>
+    <div class="mb-3">
+        <label for="tipoVeiculo" class="form-label">Tipo de veículo</label>
+        <select id="tipoVeiculo" name="seguro.tipoVeiculo"
+            class="form-select ${play.data.validation.Validation.hasError('seguro.tipoVeiculo') ? 'is-invalid' : ''}"
+            required>
+            <option value="">Selecione o tipo...</option>
+            <option value="MOTO" ${seguro?.tipoVeiculo?.toString() == 'MOTO' ? 'selected' : ''}>Moto</option>
+            <option value="CARRO" ${seguro?.tipoVeiculo?.toString() == 'CARRO' ? 'selected' : ''}>Carro</option>
+            <option value="ONIBUS" ${seguro?.tipoVeiculo?.toString() == 'ONIBUS' ? 'selected' : ''}>Ônibus</option>
+            <option value="CAMINHAO" ${seguro?.tipoVeiculo?.toString() == 'CAMINHAO' ? 'selected' : ''}>Caminhão</option>
+        </select>
+        #{if play.data.validation.Validation.hasError('seguro.tipoVeiculo')}
+            <div class="invalid-feedback">
+                ${play.data.validation.Validation.error('seguro.tipoVeiculo').message()}
+            </div>
+        #{/if}
+    </div>
 
-	        <option value="CARRO"
-	            #{if seguro?.tipoVeiculo == 'CARRO'}selected#{/if}>
-	            Carro
-	        </option>
+    <div class="mb-3">
+        <label for="cobertura" class="form-label">Cobertura</label>
+        <select id="cobertura" name="seguro.cobertura"
+            class="form-select ${play.data.validation.Validation.hasError('seguro.cobertura') ? 'is-invalid' : ''}"
+            required>
+            <option value="">Selecione a cobertura...</option>
+            <option value="PARCIAL" ${seguro?.cobertura?.toString() == 'PARCIAL' ? 'selected' : ''}>Parcial</option>
+            <option value="TOTAL" ${seguro?.cobertura?.toString() == 'TOTAL' ? 'selected' : ''}>Total</option>
+        </select>
+        #{if play.data.validation.Validation.hasError('seguro.cobertura')}
+            <div class="invalid-feedback">
+                ${play.data.validation.Validation.error('seguro.cobertura').message()}
+            </div>
+        #{/if}
+    </div>
 
-	        <option value="MOTO"
-	            #{if seguro?.tipoVeiculo == 'MOTO'}selected#{/if}>
-	            Moto
-	        </option>
-	    </select>
-	</div>
+    <div class="mb-3">
+        <label for="valorFranquia" class="form-label">Valor da franquia (R$)</label>
+        <input id="valorFranquia" type="number" name="seguro.valorFranquia"
+            value="${seguro?.valorFranquia}"
+            class="form-control ${play.data.validation.Validation.hasError('seguro.valorFranquia') ? 'is-invalid' : ''}"
+            min="0" step="0.01" required />
+        #{if play.data.validation.Validation.hasError('seguro.valorFranquia')}
+            <div class="invalid-feedback">
+                ${play.data.validation.Validation.error('seguro.valorFranquia').message()}
+            </div>
+        #{/if}
+    </div>
 
-	<div class="mb-3">
-	    <label class="form-label">
-	        Valor de avaliação do veículo (R$)
-	    </label>
+    <div class="mb-3">
+        <label for="valorAnual" class="form-label">Valor anual do seguro (R$)</label>
+        <input id="valorAnual" type="number" name="seguro.valorAnual"
+            value="${seguro?.valorAnual}"
+            class="form-control ${play.data.validation.Validation.hasError('seguro.valorAnual') ? 'is-invalid' : ''}"
+            min="1" step="0.01" required />
+        #{if play.data.validation.Validation.hasError('seguro.valorAnual')}
+            <div class="invalid-feedback">
+                ${play.data.validation.Validation.error('seguro.valorAnual').message()}
+            </div>
+        #{/if}
+    </div>
 
-	    <input type="number"
-	           name="seguro.valorVeiculo"
-	           class="form-control"
-	           min="0.01"
-	           step="0.01"
-	           value="${seguro?.valorVeiculo}"
-	           placeholder="Ex.: 45000.00"
-	           required />
-	</div>
-	<div class="mb-3">
-		<label class="form-label"><i class="bi bi-calendar-event"></i> Data de contratação</label>
-		<input type="text" name="seguro.dataContratacao" value="${seguro.dataContratacao?.format('dd/MM/yyyy')}"
-			class="form-control ${play.data.validation.Validation.hasError('seguro.dataContratacao') ? 'is-invalid' : ''}"
-			placeholder="dd/MM/yyyy" />
-		#{if play.data.validation.Validation.hasError('seguro.dataContratacao')}
-			<div class="invalid-feedback">Data inválida. Use o formato dd/MM/yyyy.</div>
-		#{/if}
-	</div>
+    <div class="mb-3">
+        <label for="valorVeiculo" class="form-label">Valor de avaliação do veículo (R$)</label>
+        <input id="valorVeiculo" type="number" name="seguro.valorVeiculo"
+            value="${seguro?.valorVeiculo}"
+            class="form-control ${play.data.validation.Validation.hasError('seguro.valorVeiculo') ? 'is-invalid' : ''}"
+            min="1" step="0.01" required />
+        #{if play.data.validation.Validation.hasError('seguro.valorVeiculo')}
+            <div class="invalid-feedback">
+                ${play.data.validation.Validation.error('seguro.valorVeiculo').message()}
+            </div>
+        #{/if}
+    </div>
 
-	<div class="mb-3">
-		<label class="form-label"><i class="bi bi-person-badge"></i> Segurado</label>
-		<select name="seguro.segurado.id" class="form-select ${play.data.validation.Validation.hasError('seguro.segurado') ? 'is-invalid' : ''}">
-			<option value="">Selecione o segurado...</option>
-			#{list items:segurados, as:'seg'}
-				<option value="${seg.id}" ${seg.id == seguro.segurado?.id ? 'selected' : ''}>
-					${seg.nome}
-				</option>
-			#{/list}
-		</select>
-		#{if play.data.validation.Validation.hasError('seguro.segurado')}
-			<div class="invalid-feedback">${play.data.validation.Validation.error('seguro.segurado').message()}</div>
-		#{/if}
-	</div>
+    <div class="mb-3">
+        <label for="dataContratacao" class="form-label">Data de contratação</label>
+        <input id="dataContratacao" type="text" name="seguro.dataContratacao"
+            value="${seguro?.dataContratacao?.format('dd/MM/yyyy')}"
+            class="form-control ${play.data.validation.Validation.hasError('seguro.dataContratacao') ? 'is-invalid' : ''}"
+            placeholder="dd/MM/yyyy" pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}" required />
+        #{if play.data.validation.Validation.hasError('seguro.dataContratacao')}
+            <div class="invalid-feedback">
+                ${play.data.validation.Validation.error('seguro.dataContratacao').message()}
+            </div>
+        #{/if}
+    </div>
 
-	<button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Salvar</button>
-	<a href="@{Seguros.listar}" class="btn btn-outline-secondary">Cancelar</a>
+    <div class="mb-3">
+        <label for="segurado" class="form-label">Segurado</label>
+        <select id="segurado" name="seguro.segurado.id"
+            class="form-select ${play.data.validation.Validation.hasError('seguro.segurado') ? 'is-invalid' : ''}"
+            required>
+            <option value="">Selecione o segurado...</option>
+            #{list items:segurados, as:'seg'}
+                <option value="${seg.id}" ${seg.id == seguro?.segurado?.id ? 'selected' : ''}>
+                    ${seg.nome}
+                </option>
+            #{/list}
+        </select>
+        #{if play.data.validation.Validation.hasError('seguro.segurado')}
+            <div class="invalid-feedback">
+                ${play.data.validation.Validation.error('seguro.segurado').message()}
+            </div>
+        #{/if}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    <a href="@{Seguros.listar}" class="btn btn-outline-secondary">Cancelar</a>
 </form>
 
 <hr />
-<a href="@{Segurados.form}" class="btn btn-sm btn-outline-primary"><i class="bi bi-plus-circle"></i> Cadastrar novo segurado</a>
+<a href="@{Segurados.form}" class="btn btn-sm btn-outline-primary">
+    Cadastrar novo segurado
+</a>
