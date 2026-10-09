@@ -35,6 +35,40 @@
 	</div>
 
 	<div class="mb-3">
+	    <label class="form-label">Tipo do veículo</label>
+
+	    <select name="seguro.tipoVeiculo"
+	            class="form-select"
+	            required>
+	        <option value="">Selecione o tipo</option>
+
+	        <option value="CARRO"
+	            #{if seguro?.tipoVeiculo == 'CARRO'}selected#{/if}>
+	            Carro
+	        </option>
+
+	        <option value="MOTO"
+	            #{if seguro?.tipoVeiculo == 'MOTO'}selected#{/if}>
+	            Moto
+	        </option>
+	    </select>
+	</div>
+
+	<div class="mb-3">
+	    <label class="form-label">
+	        Valor de avaliação do veículo (R$)
+	    </label>
+
+	    <input type="number"
+	           name="seguro.valorVeiculo"
+	           class="form-control"
+	           min="0.01"
+	           step="0.01"
+	           value="${seguro?.valorVeiculo}"
+	           placeholder="Ex.: 45000.00"
+	           required />
+	</div>
+	<div class="mb-3">
 		<label class="form-label"><i class="bi bi-calendar-event"></i> Data de contratação</label>
 		<input type="text" name="seguro.dataContratacao" value="${seguro.dataContratacao?.format('dd/MM/yyyy')}"
 			class="form-control ${play.data.validation.Validation.hasError('seguro.dataContratacao') ? 'is-invalid' : ''}"

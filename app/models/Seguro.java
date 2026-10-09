@@ -1,5 +1,6 @@
 package models;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.ManyToOne;
 
 import play.data.binding.As;
 import play.data.validation.Match;
+import play.data.validation.Min;
 import play.data.validation.Required;
 import play.db.jpa.Model;
 
@@ -26,9 +28,22 @@ public class Seguro extends Model {
 	@Required(message = "É obrigatório que uma apólice tenha um segurado.")
 	public Segurado segurado;
 
+    @Required(message = "Selecione o tipo do veículo.")
+    @Match(
+        value = "CARRO|MOTO",
+        message = "Selecione carro ou moto."
+    )
+    public String tipoVeiculo;
+
+    @Required(message = "Informe o valor do veículo.")
+    @Min(
+        value = 1,
+        message = "O valor do veículo deve ser maior que zero."
+    )
+    public BigDecimal valorVeiculo;
+	
 	@Enumerated(EnumType.STRING)
 	public Status status;
-
 	public Seguro() {
 		this.status = Status.ATIVO;
 	}
