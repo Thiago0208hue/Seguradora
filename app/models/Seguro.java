@@ -20,30 +20,32 @@ public class Seguro extends Model {
 	@Required(message = "É obrigatorio especificar a placa do veículo.")
 	@Match(value = "[A-Za-z]{3}[0-9][A-Za-z][0-9]{2}", message = "Placa em formato inválido, use o padrão mercosul ex:(ABC1D23).")
 	public String placa;
-	@Required(message = "É obrigatorio especificar o modelo do veículo.")
+	@Required(message = "Informe a marca do veículo.")
+	public String marca;
+
+	@Required(message = "É obrigatório especificar o modelo do veículo.")
 	public String modelo;
+
+	@Required(message = "Informe o ano de fabricação.")
+	@Min(value = 1900, message = "Ano de fabricação inválido.")
+	public Integer anoFabricacao;
 	@As("dd/MM/yyyy")
 	public Date dataContratacao;
 	@ManyToOne
 	@Required(message = "É obrigatório que uma apólice tenha um segurado.")
 	public Segurado segurado;
 
-    @Required(message = "Selecione o tipo do veículo.")
-    @Match(
-        value = "CARRO|MOTO",
-        message = "Selecione carro ou moto."
-    )
-    public String tipoVeiculo;
+	@Required(message = "Selecione o tipo do veículo.")
+	@Match(value = "CARRO|MOTO", message = "Selecione carro ou moto.")
+	public String tipoVeiculo;
 
-    @Required(message = "Informe o valor do veículo.")
-    @Min(
-        value = 1,
-        message = "O valor do veículo deve ser maior que zero."
-    )
-    public BigDecimal valorVeiculo;
-	
+	@Required(message = "Informe o valor do veículo.")
+	@Min(value = 1, message = "O valor do veículo deve ser maior que zero.")
+	public BigDecimal valorVeiculo;
+
 	@Enumerated(EnumType.STRING)
 	public Status status;
+
 	public Seguro() {
 		this.status = Status.ATIVO;
 	}

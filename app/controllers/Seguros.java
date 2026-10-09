@@ -70,6 +70,7 @@ public class Seguros extends Controller {
 		}
 
 		seguro.placa = seguro.placa.toUpperCase();
+		seguro.marca = seguro.marca.toUpperCase();
 		seguro.modelo = seguro.modelo.toUpperCase();
 		seguro.save();
 		flash.success("Apólice cadastrada com sucesso!");
