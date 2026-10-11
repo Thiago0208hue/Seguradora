@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import models.Seguro;
@@ -64,6 +65,13 @@ public class Seguros extends Controller {
 			}
 		}
 
+		Calendar contratacao = Calendar.getInstance();
+		contratacao.setTime(seguro.dataContratacao);
+		if (seguro.anoFabricacao > contratacao.get(Calendar.YEAR)) {
+			validation.addError("seguro.anoFabricacao",
+					"O ano de fabricação não pode ser posterior ao ano da contratação.");
+		}
+
 		if (validation.hasErrors()) {
 			List<Segurado> segurados = Segurado.findAll();
 			renderTemplate("Seguros/form.html", seguro, segurados);
@@ -75,8 +83,7 @@ public class Seguros extends Controller {
 		seguro.modelo = seguro.modelo.toUpperCase();
 		seguro.save();
 		flash.success("Apólice cadastrada com sucesso!");
-		listar(null);
-	
+		detalhar(seguro.id);
 	}
 
 	public static void remover(Long id) {
