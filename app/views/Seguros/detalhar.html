@@ -74,6 +74,14 @@
 					<span>${seguro.cobertura ?: 'Não informado'}</span>
 				</li>
 				<li class="list-group-item d-flex justify-content-between">
+					<span class="text-muted"><i class="bi bi-speedometer2"></i> Nível de risco</span>
+					<span>${seguro.nivelRisco ?: 'Não calculado'}</span>
+				</li>
+				<li class="list-group-item d-flex justify-content-between">
+					<span class="text-muted"><i class="bi bi-percent"></i> Tipo de franquia</span>
+					<span>${seguro.tipoFranquia ?: 'Não calculado'}</span>
+				</li>
+				<li class="list-group-item d-flex justify-content-between">
 					<span class="text-muted"><i class="bi bi-calendar-event"></i> Data de contratação</span>
 					<span>${seguro.dataContratacao?.format('dd/MM/yyyy') ?: 'Não informado'}</span>
 				</li>

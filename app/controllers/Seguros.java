@@ -69,12 +69,14 @@ public class Seguros extends Controller {
 			renderTemplate("Seguros/form.html", seguro, segurados);
 		}
 
+		seguro.calcular();
 		seguro.placa = seguro.placa.toUpperCase();
 		seguro.marca = seguro.marca.toUpperCase();
 		seguro.modelo = seguro.modelo.toUpperCase();
 		seguro.save();
 		flash.success("Apólice cadastrada com sucesso!");
 		listar(null);
+	
 	}
 
 	public static void remover(Long id) {
