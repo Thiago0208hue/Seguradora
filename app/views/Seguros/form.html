@@ -10,10 +10,20 @@
 
 <hr />
 
-<form action="@{Seguros.salvar}" method="post" class="col-md-6">
-    <input type="hidden" name="seguro.id" value="${seguro?.id}" />
-
-    <div class="mb-3">
+<form id="formSeguro" action="@{Seguros.salvar}" method="post" class="col-lg-8">  
+      <input type="hidden" name="seguro.id" value="${seguro?.id}" />
+        <ul class="nav nav-tabs mb-3" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" type="button" data-bs-toggle="tab" data-bs-target="#aba-veiculo" role="tab">Veículo</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" type="button" data-bs-toggle="tab" data-bs-target="#aba-contrato" role="tab">Contrato</button>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="aba-veiculo" role="tabpanel">
+                <div class="row g-3">
+    <div class="col-md-4">
         <label for="placa" class="form-label">Placa do veículo</label>
         <input id="placa" type="text" name="seguro.placa"
             value="${seguro?.placa}"
@@ -27,7 +37,7 @@
         #{/if}
     </div>
 
-    <div class="mb-3">
+    <div class="col-md-4">
         <label for="marca" class="form-label">Marca</label>
         <input id="marca" type="text" name="seguro.marca"
             value="${seguro?.marca}"
@@ -40,7 +50,7 @@
         #{/if}
     </div>
 
-    <div class="mb-3">
+    <div class="col-md-4">
         <label for="modelo" class="form-label">Modelo do veículo</label>
         <input id="modelo" type="text" name="seguro.modelo"
             value="${seguro?.modelo}"
@@ -53,7 +63,7 @@
         #{/if}
     </div>
 
-    <div class="mb-3">
+    <div class="col-md-6">
         <label for="anoFabricacao" class="form-label">Ano de fabricação</label>
         <input id="anoFabricacao" type="number" name="seguro.anoFabricacao"
             value="${seguro?.anoFabricacao}"
@@ -66,7 +76,7 @@
         #{/if}
     </div>
 
-    <div class="mb-3">
+    <div class="col-md-6">
         <label for="tipoVeiculo" class="form-label">Tipo de veículo</label>
         <select id="tipoVeiculo" name="seguro.tipoVeiculo"
             class="form-select ${play.data.validation.Validation.hasError('seguro.tipoVeiculo') ? 'is-invalid' : ''}"
@@ -83,8 +93,13 @@
             </div>
         #{/if}
     </div>
+</div>
+        </div>
 
-    <div class="mb-3">
+<div class="tab-pane" id="aba-contrato" role="tabpanel">
+    <div class="row g-3">
+
+    <div class="col-md-6">
         <label for="cobertura" class="form-label">Cobertura</label>
         <select id="cobertura" name="seguro.cobertura"
             class="form-select ${play.data.validation.Validation.hasError('seguro.cobertura') ? 'is-invalid' : ''}"
@@ -100,7 +115,7 @@
         #{/if}
     </div>
 
-    <div class="mb-3">
+    <div class="col-md-6">
         <label for="valorFranquia" class="form-label">Valor da franquia (R$)</label>
         <input id="valorFranquia" type="number" name="seguro.valorFranquia"
             value="${seguro?.valorFranquia}"
@@ -113,7 +128,7 @@
         #{/if}
     </div>
 
-    <div class="mb-3">
+    <div class="col-md-6">
         <label for="valorAnual" class="form-label">Valor anual do seguro (R$)</label>
         <input id="valorAnual" type="number" name="seguro.valorAnual"
             value="${seguro?.valorAnual}"
@@ -126,7 +141,7 @@
         #{/if}
     </div>
 
-    <div class="mb-3">
+    <div class="col-md-6">
         <label for="valorVeiculo" class="form-label">Valor de avaliação do veículo (R$)</label>
         <input id="valorVeiculo" type="number" name="seguro.valorVeiculo"
             value="${seguro?.valorVeiculo}"
@@ -139,7 +154,7 @@
         #{/if}
     </div>
 
-    <div class="mb-3">
+    <div class="col-md-6">
         <label for="dataContratacao" class="form-label">Data de contratação</label>
         <input id="dataContratacao" type="text" name="seguro.dataContratacao"
             value="${seguro?.dataContratacao?.format('dd/MM/yyyy')}"
@@ -152,7 +167,7 @@
         #{/if}
     </div>
 
-    <div class="mb-3">
+    <div class="col-md-6">
         <label for="segurado" class="form-label">Segurado</label>
         <select id="segurado" name="seguro.segurado.id"
             class="form-select ${play.data.validation.Validation.hasError('seguro.segurado') ? 'is-invalid' : ''}"
@@ -170,12 +185,34 @@
             </div>
         #{/if}
     </div>
-
-    <button type="submit" class="btn btn-primary">Salvar</button>
+</div>
+</div>
+</div>
+<div class="mt-4">
+    <button id="btnSalvar" type="submit" class="btn btn-primary">Salvar</button>
     <a href="@{Seguros.listar}" class="btn btn-outline-secondary">Cancelar</a>
+    <a href="@{Segurados.form}" class="btn btn-sm btn-outline-primary ms-2">Cadastrar novo segurado</a>
+</div>
+
 </form>
 
-<hr />
-<a href="@{Segurados.form}" class="btn btn-sm btn-outline-primary">
-    Cadastrar novo segurado
-</a>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var form = document.getElementById('formSeguro');
+
+    function abrirAbaDe(campo) {
+        var pane = campo.closest('.tab-pane');
+        if (!pane || pane.classList.contains('active')) return;
+        var botao = document.querySelector('[data-bs-target="#' + pane.id + '"]');
+        bootstrap.Tab.getOrCreateInstance(botao).show();
+    }
+
+    var comErro = form.querySelector('.is-invalid');
+    if (comErro) abrirAbaDe(comErro);
+
+    document.getElementById('btnSalvar').addEventListener('click', function () {
+        var invalido = form.querySelector(':invalid');
+        if (invalido) abrirAbaDe(invalido);
+    });
+});
+</script>

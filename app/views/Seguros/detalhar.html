@@ -2,46 +2,97 @@
 #{set title:'Detalhamento de Apólice' /}
 
 <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
-	<h1><i class="bi bi-file-earmark-text"></i> Detalhamento da Apólice</h1>
+	<h1><i class="bi bi-file-earmark-text"></i> Apólice #${seguro.id}</h1>
 	<div>
 		#{if session.perfil == 'ADMIN'}
-	<a href="@{Seguros.editar(seguro.id)}" class="btn btn-secondary"><i class="bi bi-pencil"></i> Editar</a>
-	<a href="@{Seguros.remover(seguro.id)}" class="btn btn-danger"><i class="bi bi-trash"></i> Remover</a>
-#{/if}
+			<a href="@{Seguros.editar(seguro.id)}" class="btn btn-secondary"><i class="bi bi-pencil"></i> Editar</a>
+			<a href="@{Seguros.remover(seguro.id)}" class="btn btn-danger"><i class="bi bi-trash"></i> Remover</a>
+		#{/if}
 	</div>
 </div>
 <hr />
 
-<div class="card col-md-6 mb-3 shadow-sm">
-	<div class="card-header bg-primary text-white">
-		<strong><i class="bi bi-hash"></i> Apólice #${seguro.id}</strong>
+<div class="card col-lg-8 mb-3 shadow-sm">
+	<div class="card-header">
+		<ul class="nav nav-tabs card-header-tabs" role="tablist">
+			<li class="nav-item" role="presentation">
+				<button class="nav-link active" type="button" data-bs-toggle="tab" data-bs-target="#aba-veiculo" role="tab">
+					<i class="bi bi-car-front"></i> Veículo
+				</button>
+			</li>
+			<li class="nav-item" role="presentation">
+				<button class="nav-link" type="button" data-bs-toggle="tab" data-bs-target="#aba-contrato" role="tab">
+					<i class="bi bi-file-earmark-check"></i> Contrato
+				</button>
+			</li>
+		</ul>
 	</div>
-	<ul class="list-group list-group-flush">
-		<li class="list-group-item d-flex justify-content-between">
-			<span class="text-muted"><i class="bi bi-person"></i> Segurado</span>
-			<span>${seguro.segurado?.nome ?: 'Não informado'}</span>
-		</li>
-		<li class="list-group-item d-flex justify-content-between">
-			<span class="text-muted"><i class="bi bi-envelope"></i> Email</span>
-			<span>${seguro.segurado?.email ?: 'Não informado'}</span>
-		</li>
-		<li class="list-group-item d-flex justify-content-between">
-			<span class="text-muted"><i class="bi bi-telephone"></i> Telefone</span>
-			<span>${seguro.segurado?.telefone ?: 'Não informado'}</span>
-		</li>
-		<li class="list-group-item d-flex justify-content-between">
-			<span class="text-muted"><i class="bi bi-car-front"></i> Veículo</span>
-			<span>${seguro.modelo}</span>
-		</li>
-		<li class="list-group-item d-flex justify-content-between">
-			<span class="text-muted"><i class="bi bi-credit-card-2-front"></i> Placa</span>
-			<span class="badge badge-placa">${seguro.placa}</span>
-		</li>
-		<li class="list-group-item d-flex justify-content-between">
-			<span class="text-muted"><i class="bi bi-calendar-event"></i> Data de Contratação</span>
-			<span>${seguro.dataContratacao?.format('dd/MM/yyyy') ?: 'Não informado'}</span>
-		</li>
-	</ul>
+
+	<div class="tab-content">
+
+		<div class="tab-pane active" id="aba-veiculo" role="tabpanel">
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item d-flex justify-content-between">
+					<span class="text-muted"><i class="bi bi-credit-card-2-front"></i> Placa</span>
+					<span class="badge badge-placa">${seguro.placa}</span>
+				</li>
+				<li class="list-group-item d-flex justify-content-between">
+					<span class="text-muted"><i class="bi bi-tag"></i> Marca</span>
+					<span>${seguro.marca ?: 'Não informado'}</span>
+				</li>
+				<li class="list-group-item d-flex justify-content-between">
+					<span class="text-muted"><i class="bi bi-car-front"></i> Modelo</span>
+					<span>${seguro.modelo ?: 'Não informado'}</span>
+				</li>
+				<li class="list-group-item d-flex justify-content-between">
+					<span class="text-muted"><i class="bi bi-calendar3"></i> Ano de fabricação</span>
+					<span>${seguro.anoFabricacao ?: 'Não informado'}</span>
+				</li>
+				<li class="list-group-item d-flex justify-content-between">
+					<span class="text-muted"><i class="bi bi-truck"></i> Tipo de veículo</span>
+					<span>${seguro.tipoVeiculo ?: 'Não informado'}</span>
+				</li>
+			</ul>
+		</div>
+
+		<div class="tab-pane" id="aba-contrato" role="tabpanel">
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item d-flex justify-content-between">
+					<span class="text-muted"><i class="bi bi-person"></i> Segurado</span>
+					<span>${seguro.segurado?.nome ?: 'Não informado'}</span>
+				</li>
+				<li class="list-group-item d-flex justify-content-between">
+					<span class="text-muted"><i class="bi bi-envelope"></i> Email</span>
+					<span>${seguro.segurado?.email ?: 'Não informado'}</span>
+				</li>
+				<li class="list-group-item d-flex justify-content-between">
+					<span class="text-muted"><i class="bi bi-telephone"></i> Telefone</span>
+					<span>${seguro.segurado?.telefone ?: 'Não informado'}</span>
+				</li>
+				<li class="list-group-item d-flex justify-content-between">
+					<span class="text-muted"><i class="bi bi-shield-check"></i> Cobertura</span>
+					<span>${seguro.cobertura ?: 'Não informado'}</span>
+				</li>
+				<li class="list-group-item d-flex justify-content-between">
+					<span class="text-muted"><i class="bi bi-calendar-event"></i> Data de contratação</span>
+					<span>${seguro.dataContratacao?.format('dd/MM/yyyy') ?: 'Não informado'}</span>
+				</li>
+				<li class="list-group-item d-flex justify-content-between">
+					<span class="text-muted"><i class="bi bi-cash"></i> Valor da franquia</span>
+					<span>R$ ${seguro.valorFranquia?.format('#,##0.00') ?: 'Não informado'}</span>
+				</li>
+				<li class="list-group-item d-flex justify-content-between">
+					<span class="text-muted"><i class="bi bi-cash-coin"></i> Valor anual do seguro</span>
+					<span>R$ ${seguro.valorAnual?.format('#,##0.00') ?: 'Não informado'}</span>
+				</li>
+				<li class="list-group-item d-flex justify-content-between">
+					<span class="text-muted"><i class="bi bi-currency-dollar"></i> Avaliação do veículo</span>
+					<span>R$ ${seguro.valorVeiculo?.format('#,##0.00') ?: 'Não informado'}</span>
+				</li>
+			</ul>
+		</div>
+
+	</div>
 </div>
 
 <a href="@{Seguros.listar}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Retornar</a>
