@@ -19,9 +19,8 @@ public class Seguros extends Controller {
 		List<Segurado> segurados = Segurado.findAll();
 		render(seguro, segurados);
 	}
-
 	public static void editar(Long id) {
-		Seguro seguro = Seguro.findById(id);
+		Seguro seguro = (id == null) ? null : Seguro.<Seguro>findById(id);
 		if (seguro == null) {
 			flash.error("Apólice não encontrada");
 			listar(null);
@@ -45,9 +44,12 @@ public class Seguros extends Controller {
 		}
 		render(seguros, termo);
 	}
-
 	public static void detalhar(Long id) {
-		Seguro seguro = Seguro.findById(id);
+		Seguro seguro = (id == null) ? null : Seguro.<Seguro>findById(id);
+		if (seguro == null) {
+			flash.error("Apólice não encontrada");
+			listar(null);
+		}
 		render(seguro);
 	}
 
@@ -87,12 +89,14 @@ public class Seguros extends Controller {
 	}
 
 	public static void remover(Long id) {
-		Seguro seguro = Seguro.findById(id);
+		Seguro seguro = (id == null) ? null : Seguro.<Seguro>findById(id);
+		if (seguro == null) {
+			flash.error("Apólice não encontrada");
+			listar(null);
+		}
 		seguro.status = Status.INATIVO;
 		seguro.save();
 
 		flash.success("Apólice removida com sucesso!");
 		listar(null);
-	}
-
-}
+	}}

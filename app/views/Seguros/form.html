@@ -99,6 +99,14 @@
 <div class="tab-pane" id="aba-contrato" role="tabpanel">
     <div class="row g-3">
 
+    <div class="col-12">
+        <div class="alert alert-info mb-0">
+            <i class="bi bi-calculator"></i>
+            O nível de risco, o tipo de franquia, o valor da franquia e o valor anual
+            são calculados automaticamente ao salvar, a partir do tipo e do valor do veículo e da cobertura.
+        </div>
+    </div>
+
     <div class="col-md-6">
         <label for="cobertura" class="form-label">Cobertura</label>
         <select id="cobertura" name="seguro.cobertura"
@@ -111,32 +119,6 @@
         #{if play.data.validation.Validation.hasError('seguro.cobertura')}
             <div class="invalid-feedback">
                 ${play.data.validation.Validation.error('seguro.cobertura').message()}
-            </div>
-        #{/if}
-    </div>
-
-    <div class="col-md-6">
-        <label for="valorFranquia" class="form-label">Valor da franquia (R$)</label>
-        <input id="valorFranquia" type="number" name="seguro.valorFranquia"
-            value="${seguro?.valorFranquia}"
-            class="form-control ${play.data.validation.Validation.hasError('seguro.valorFranquia') ? 'is-invalid' : ''}"
-            min="0" step="0.01" required />
-        #{if play.data.validation.Validation.hasError('seguro.valorFranquia')}
-            <div class="invalid-feedback">
-                ${play.data.validation.Validation.error('seguro.valorFranquia').message()}
-            </div>
-        #{/if}
-    </div>
-
-    <div class="col-md-6">
-        <label for="valorAnual" class="form-label">Valor anual do seguro (R$)</label>
-        <input id="valorAnual" type="number" name="seguro.valorAnual"
-            value="${seguro?.valorAnual}"
-            class="form-control ${play.data.validation.Validation.hasError('seguro.valorAnual') ? 'is-invalid' : ''}"
-            min="1" step="0.01" required />
-        #{if play.data.validation.Validation.hasError('seguro.valorAnual')}
-            <div class="invalid-feedback">
-                ${play.data.validation.Validation.error('seguro.valorAnual').message()}
             </div>
         #{/if}
     </div>
@@ -185,7 +167,33 @@
             </div>
         #{/if}
     </div>
-</div>
+
+    #{if seguro?.id}
+    <div class="col-12">
+        <hr class="my-1" />
+        <p class="text-muted mb-2">Valores atuais (calculados, serão recalculados ao salvar)</p>
+        <div class="row g-3">
+            <div class="col-md-3">
+                <label class="form-label">Nível de risco</label>
+                <input type="text" class="form-control" value="${seguro.nivelRisco ?: 'Não calculado'}" disabled />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Tipo de franquia</label>
+                <input type="text" class="form-control" value="${seguro.tipoFranquia ?: 'Não calculado'}" disabled />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Valor da franquia</label>
+                <input type="text" class="form-control" value="R$ ${seguro.valorFranquia?.format('#,##0.00') ?: '-'}" disabled />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Valor anual</label>
+                <input type="text" class="form-control" value="R$ ${seguro.valorAnual?.format('#,##0.00') ?: '-'}" disabled />
+            </div>
+        </div>
+    </div>
+    #{/if}
+
+    </div>
 </div>
 </div>
 <div class="mt-4">
