@@ -4,16 +4,15 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
-
 import play.data.binding.As;
 import play.data.validation.Check;
 import play.data.validation.CheckWith;
 import play.data.validation.Match;
+import play.data.validation.Max;
 import play.data.validation.Min;
 import play.data.validation.Required;
 import play.db.jpa.Model;
@@ -103,6 +102,7 @@ public class Seguro extends Model {
 
 	@Required(message = "Informe o valor do veículo.")
 	@Min(value = 1, message = "O valor do veículo deve ser maior que zero.")
+	@Max(value = 10000000, message = "O valor do veículo não pode passar de R$ 10.000.000,00.")
 	public BigDecimal valorVeiculo;
 
 	@Enumerated(EnumType.STRING)

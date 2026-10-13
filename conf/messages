@@ -1,4 +1,11 @@
 # You can specialize this file for each language.
 # For example, for French create a messages.fr file
 #
+validation.object=Verifique os dados informados no formulário.
 validation.invalid=Verifique o valor informado no formulário.
+validation.required=Campo obrigatório.
+validation.email=E-mail inválido.
+validation.match=Formato inválido.
+validation.min=Deve ser maior ou igual a %2$s.
+validation.max=Deve ser menor ou igual a %2$s.
+validation.notFound=Registro não encontrado.

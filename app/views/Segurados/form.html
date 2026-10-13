@@ -10,50 +10,77 @@
 
 <hr />
 
-<form action="/segurados/salvar" method="post" class="col-md-6">
+<form action="@{Segurados.salvar}" method="post" class="col-md-6">
 
-	<input type="hidden" name="segurado.id" value="${segurado.id}" />
+	<input type="hidden" name="segurado.id" value="${segurado?.id}" />
 
 	<div class="mb-3">
-		<label class="form-label"><i class="bi bi-person"></i> Nome completo</label>
-		<input type="text" name="segurado.nome" value="${segurado.nome}"
+		<label for="nome" class="form-label"><i class="bi bi-person"></i> Nome completo</label>
+		<input id="nome" type="text" name="segurado.nome" value="${segurado?.nome}"
 			class="form-control ${play.data.validation.Validation.hasError('segurado.nome') ? 'is-invalid' : ''}"
-			placeholder="Nome completo" />
+			placeholder="Ex.: Maria da Silva" maxlength="100" autocomplete="off" required />
 		#{if play.data.validation.Validation.hasError('segurado.nome')}
 			<div class="invalid-feedback">${play.data.validation.Validation.error('segurado.nome').message()}</div>
 		#{/if}
 	</div>
 
 	<div class="mb-3">
-		<label class="form-label"><i class="bi bi-card-text"></i> CPF</label>
-		<input type="text" name="segurado.cpf" value="${segurado.cpf}"
+		<label for="cpf" class="form-label"><i class="bi bi-card-text"></i> CPF</label>
+		<input id="cpf" type="text" name="segurado.cpf" value="${segurado?.cpf}"
 			class="form-control ${play.data.validation.Validation.hasError('segurado.cpf') ? 'is-invalid' : ''}"
-			placeholder="CPF" />
+			placeholder="000.000.000-00" maxlength="14" inputmode="numeric" autocomplete="off" required />
 		#{if play.data.validation.Validation.hasError('segurado.cpf')}
 			<div class="invalid-feedback">${play.data.validation.Validation.error('segurado.cpf').message()}</div>
 		#{/if}
 	</div>
 
 	<div class="mb-3">
-		<label class="form-label"><i class="bi bi-envelope"></i> Email</label>
-		<input type="text" name="segurado.email" value="${segurado.email}"
+		<label for="email" class="form-label"><i class="bi bi-envelope"></i> Email</label>
+		<input id="email" type="email" name="segurado.email" value="${segurado?.email}"
 			class="form-control ${play.data.validation.Validation.hasError('segurado.email') ? 'is-invalid' : ''}"
-			placeholder="Email" />
+			placeholder="nome@exemplo.com" autocomplete="off" required />
 		#{if play.data.validation.Validation.hasError('segurado.email')}
 			<div class="invalid-feedback">${play.data.validation.Validation.error('segurado.email').message()}</div>
 		#{/if}
 	</div>
 
 	<div class="mb-3">
-		<label class="form-label"><i class="bi bi-telephone"></i> Telefone</label>
-		<input type="text" name="segurado.telefone" value="${segurado.telefone}"
+		<label for="telefone" class="form-label"><i class="bi bi-telephone"></i> Telefone</label>
+		<input id="telefone" type="text" name="segurado.telefone" value="${segurado?.telefone}"
 			class="form-control ${play.data.validation.Validation.hasError('segurado.telefone') ? 'is-invalid' : ''}"
-			placeholder="Telefone" />
+			placeholder="(00) 00000-0000" maxlength="15" inputmode="numeric" autocomplete="off" required />
 		#{if play.data.validation.Validation.hasError('segurado.telefone')}
 			<div class="invalid-feedback">${play.data.validation.Validation.error('segurado.telefone').message()}</div>
 		#{/if}
+		<div class="form-text">Informe o DDD e o número com 9 dígitos.</div>
 	</div>
 
 	<button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Salvar</button>
 	<a href="@{Segurados.listar}" class="btn btn-outline-secondary">Cancelar</a>
 </form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+	var cpf = document.getElementById('cpf');
+	var tel = document.getElementById('telefone');
+
+	function mascaraCpf(v) {
+		v = v.replace(/\D/g, '').slice(0, 11);
+		return v.replace(/(\d{3})(\d)/, '$1.$2')
+				.replace(/(\d{3})(\d)/, '$1.$2')
+				.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+	}
+
+	function mascaraTelefone(v) {
+		v = v.replace(/\D/g, '').slice(0, 11);
+		return v.replace(/(\d{2})(\d)/, '($1) $2')
+				.replace(/(\d{5})(\d{1,4})$/, '$1-$2');
+	}
+
+	cpf.addEventListener('input', function () { cpf.value = mascaraCpf(cpf.value); });
+	tel.addEventListener('input', function () { tel.value = mascaraTelefone(tel.value); });
+
+	if (cpf.value) cpf.value = mascaraCpf(cpf.value);
+	if (tel.value) tel.value = mascaraTelefone(tel.value);
+});
+</script>

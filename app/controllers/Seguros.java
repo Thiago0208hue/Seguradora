@@ -16,7 +16,7 @@ public class Seguros extends Controller {
 
 	public static void form() {
 		Seguro seguro = new Seguro();
-		List<Segurado> segurados = Segurado.findAll();
+		List<Segurado> segurados = Segurado.find("status != ?1", Status.INATIVO).fetch();
 		render(seguro, segurados);
 	}
 	public static void editar(Long id) {
@@ -25,18 +25,24 @@ public class Seguros extends Controller {
 			flash.error("Apólice não encontrada");
 			listar(null);
 		}
-		List<Segurado> segurados = Segurado.findAll();
+		List<Segurado> segurados = Segurado.find("status != ?1", Status.INATIVO).fetch();
 		renderTemplate("Seguros/form.html", seguro, segurados);
 	}
 
 	public static void listar(String termo) {
 		List<Seguro> seguros = Seguro.find("status != ?1", Status.INATIVO).fetch();
 		if (termo != null && !termo.trim().isEmpty()) {
+			String texto = termo.trim().toLowerCase();
 			String cpfBusca = termo.replaceAll("[^0-9]", "");
 			List<Seguro> filtrados = new ArrayList<Seguro>();
 			for (Seguro s : seguros) {
-				if (s.segurado != null && s.segurado.cpf != null
-						&& s.segurado.cpf.replaceAll("[^0-9]", "").contains(cpfBusca)) {
+				if (s.segurado == null) {
+					continue;
+				}
+				boolean porNome = s.segurado.nome != null && s.segurado.nome.toLowerCase().contains(texto);
+				boolean porCpf = !cpfBusca.isEmpty() && s.segurado.cpf != null
+						&& s.segurado.cpf.replaceAll("[^0-9]", "").contains(cpfBusca);
+				if (porNome || porCpf) {
 					filtrados.add(s);
 				}
 			}
@@ -55,7 +61,7 @@ public class Seguros extends Controller {
 
 	public static void salvar(@Valid Seguro seguro) {
 		if (validation.hasErrors()) {
-			List<Segurado> segurados = Segurado.findAll();
+			List<Segurado> segurados = Segurado.find("status != ?1", Status.INATIVO).fetch();
 			renderTemplate("Seguros/form.html", seguro, segurados);
 		}
 
@@ -75,7 +81,7 @@ public class Seguros extends Controller {
 		}
 
 		if (validation.hasErrors()) {
-			List<Segurado> segurados = Segurado.findAll();
+			List<Segurado> segurados = Segurado.find("status != ?1", Status.INATIVO).fetch();
 			renderTemplate("Seguros/form.html", seguro, segurados);
 		}
 

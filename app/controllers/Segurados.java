@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.Segurado;
+import models.Seguro;
 import models.Status;
 import play.mvc.Controller;
 import play.mvc.With;
@@ -28,10 +29,14 @@ public class Segurados extends Controller {
 	public static void listar(String termo) {
 		List<Segurado> segurados = Segurado.find("status != ?1", Status.INATIVO).fetch();
 		if (termo != null && !termo.trim().isEmpty()) {
+			String texto = termo.trim().toLowerCase();
 			String cpfBusca = termo.replaceAll("[^0-9]", "");
 			List<Segurado> filtrados = new ArrayList<Segurado>();
 			for (Segurado s : segurados) {
-				if (s.cpf != null && s.cpf.replaceAll("[^0-9]", "").contains(cpfBusca)) {
+				boolean porNome = s.nome != null && s.nome.toLowerCase().contains(texto);
+				boolean porCpf = !cpfBusca.isEmpty() && s.cpf != null
+						&& s.cpf.replaceAll("[^0-9]", "").contains(cpfBusca);
+				if (porNome || porCpf) {
 					filtrados.add(s);
 				}
 			}
@@ -41,7 +46,11 @@ public class Segurados extends Controller {
 	}
 
 	public static void detalhar(Long id) {
-		Segurado segurado = Segurado.findById(id);
+		Segurado segurado = (id == null) ? null : Segurado.<Segurado>findById(id);
+		if (segurado == null) {
+			flash.error("Segurado não encontrado");
+			listar(null);
+		}
 		render(segurado);
 	}
 
@@ -84,6 +93,10 @@ public static void salvar(Segurado segurado) {
             continue;
         }
 
+        if (existente.status == Status.INATIVO) {
+            continue;
+        }
+
         String cpfExistente = existente.cpf == null
             ? ""
             : existente.cpf.replaceAll("[^0-9]", "");
@@ -116,7 +129,15 @@ public static void salvar(Segurado segurado) {
 }
 
 	public static void remover(Long id) {
-		Segurado segurado = Segurado.findById(id);
+		Segurado segurado = (id == null) ? null : Segurado.<Segurado>findById(id);
+		if (segurado == null) {
+			flash.error("Segurado não encontrado");
+			listar(null);
+		}
+		if (Seguro.count("segurado = ?1 and status = ?2", segurado, Status.ATIVO) > 0) {
+			flash.error("Não é possível remover: o segurado possui apólice ativa. Remova a apólice primeiro.");
+			listar(null);
+		}
 		segurado.status = Status.INATIVO;
 		segurado.save();
 
